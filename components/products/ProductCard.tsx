@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import NextLink from 'next/link';
 import { IProduct } from "@/interfaces";
-import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link } from '@mui/material';
+import { Grid, Card, CardActionArea, CardMedia, Box, Typography, Link, Chip } from '@mui/material';
 
 
 interface Props{
@@ -30,7 +30,23 @@ export const ProductCard = ({ product }:Props) => {
             <Card>
             <NextLink href={`/product/${ product.slug }`} passHref prefetch={ false } legacyBehavior>
                 <Link>
+
+
                     <CardActionArea>
+                        {
+                            (product.inStock === 0 ) && (
+                                <Chip 
+                                    color='primary' 
+                                    label='Not available'
+                                    sx={{ 
+                                        position:'absolute',
+                                        zIndex: 99,
+                                        top:'10px',
+                                        left: '10px'
+                                    }}
+                                />
+                            )
+                        }
                         <CardMedia
                             component='img'
                             className='fadeIn'
