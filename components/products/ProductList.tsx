@@ -1,9 +1,9 @@
-import { IProducts } from '@/interfaces';
+import { IProduct } from '@/interfaces';
 import { Grid } from '@mui/material';
 import { ProductCard } from './ProductCard';
 
 interface Props{
-    products: IProducts[];
+    products: IProduct[];
 }
 export const ProductList = ({ products }:Props) => {
     return(
