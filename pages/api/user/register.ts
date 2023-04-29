@@ -32,16 +32,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 const registerUser = async(req: NextApiRequest, res: NextApiResponse<Data>) =>  {
     const { email = '', password = '', name = '', lastName = '' } = req.body;
     
-    
-    if( password.length < 6 ){
+    if( name.length < 2 ){
         return res.status(400).json({
-            message: 'The password requires 6 characters'
+            message: 'The name requires over 2 characters'
         })
     }
     
-    if( name.length < 3 ){
+    if( lastName.length < 2 ){
         return res.status(400).json({
-            message: 'The name requires over 3 characters'
+            message: 'The last name requires over 2 characters'
         })
     }
     
@@ -50,7 +49,12 @@ const registerUser = async(req: NextApiRequest, res: NextApiResponse<Data>) =>  
             message: 'The email format is not valid'
         })   
     }
-
+    
+    if( password.length < 6 ){
+        return res.status(400).json({
+            message: 'The password requires 6 characters'
+        })
+    }
     await db.connect();
     const user  = await User.findOne({ email });
     
