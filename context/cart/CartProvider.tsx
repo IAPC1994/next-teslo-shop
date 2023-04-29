@@ -7,19 +7,34 @@ import { CartContext, cartReducer } from './';
 
 
 export interface CartState {
+    isLoaded: boolean;
     cart: ICartProduct[];
     numberOfItems: number;
     subTotal: number;
     tax: number;
     total: number;
+    shippingAddress?: ShippingAddress
+}
+
+export interface ShippingAddress{
+    name        : string;
+    lastName    : string;
+    address     : string;
+    address2    : string;
+    zip         : string;
+    city        : string;
+    country     : string;
+    phoneNumber : string;
 }
 
 const CART_INITIAL_STATE:CartState = {
+    isLoaded: false,
     cart:[],
     numberOfItems: 0,
     subTotal: 0,
     tax: 0,
     total: 0,
+    shippingAddress: undefined,
 }
 
 export const CartProvider:FC<PropsWithChildren> = ({ children }) => {
@@ -35,6 +50,23 @@ export const CartProvider:FC<PropsWithChildren> = ({ children }) => {
             dispatch({ type: '[Cart] - Load Cart From Cookies', payload: [] });
         }
     }, []);
+
+    useEffect( () => {
+        if( Cookie.get('name') ){
+            const shippingAddress = {
+                name       : Cookie.get('name') || '',
+                lastName   : Cookie.get('lastName') || '',
+                address    : Cookie.get('address') || '',
+                address2   : Cookie.get('address2') || '',
+                zip        : Cookie.get('zip') || '',
+                city       : Cookie.get('city') || '',
+                country    : Cookie.get('country') || '',
+                phoneNumber: Cookie.get('phoneNumber') || '',
+            }
+    
+            dispatch({ type: '[Cart] - Load Address From Cookies', payload: shippingAddress });
+        } 
+    },[]);
     
 
     useEffect(() => {
@@ -88,7 +120,19 @@ export const CartProvider:FC<PropsWithChildren> = ({ children }) => {
     }
 
     const removeCartProduct = ( product: ICartProduct) => {
-        dispatch({ type: '[Cart] - Remove Product in Cart', payload: product });
+        dispatch({ type: '[Cart] - Remove Product In Cart', payload: product });
+    }
+
+    const updateAddress = ( address:ShippingAddress ) => {
+        Cookie.set('name', address.name);
+        Cookie.set('lastName', address.lastName);
+        Cookie.set('address', address.address);
+        Cookie.set('address2', address.address2 || '');
+        Cookie.set('zip', address.zip);
+        Cookie.set('city', address.city);
+        Cookie.set('country',address.country);
+        Cookie.set('phoneNumber',address.phoneNumber);
+        dispatch({ type: '[Cart] - Update Address', payload: address });
     }
 
     return(
@@ -98,7 +142,8 @@ export const CartProvider:FC<PropsWithChildren> = ({ children }) => {
             //Methods
             addProductCart,
             updateCartQuantity,
-            removeCartProduct
+            removeCartProduct,
+            updateAddress
        }}>
             { children }
        </CartContext.Provider>

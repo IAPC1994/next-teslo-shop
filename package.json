@@ -28,7 +28,8 @@
     "react-hook-form": "^7.43.9",
     "react-slideshow-image": "^4.2.1",
     "swr": "^2.1.5",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "jose": "^4.10.3"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
