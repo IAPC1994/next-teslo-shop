@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Typography, Grid, TextField, FormControl, MenuItem, Box, Button } from '@mui/material';
 import Cookies from 'js-cookie';
@@ -38,9 +38,23 @@ const AddressPage = () => {
     const { updateAddress } = useContext(CartContext);
     const router = useRouter();
 
-    const { register , handleSubmit,formState:{ errors } } = useForm<FormData>({
-        defaultValues: getAddressFromCookies()
+    const { register , handleSubmit,formState:{ errors }, reset } = useForm<FormData>({
+        defaultValues: {
+            name: '',
+            lastName: '',
+            address: '',
+            address2: '',
+            zip: '',
+            city: '',
+            country: countries[0].code,
+            phoneNumber: '',
+        }
     });
+
+    useEffect(() => {
+        reset( getAddressFromCookies() );
+    }, [reset])
+    
 
     const onSubmitAddress = ( { name, lastName, address, address2, zip, city, country, phoneNumber }:FormData ) => {
         updateAddress({ name, lastName, address, address2, zip, city, country, phoneNumber });
@@ -137,12 +151,13 @@ const AddressPage = () => {
                         />
                     </Grid>
                     <Grid item xs={ 12 } sm={ 6 }>
-                        <FormControl fullWidth>
+                        {/* <FormControl fullWidth> */}
                             <TextField
-                                select
+                                // select
                                 variant="filled"
                                 label='Country'
-                                defaultValue={ Cookies.get('country') || countries[0].code }
+                                fullWidth
+                                // defaultValue={ Cookies.get('country') || countries[0].code }
                                 {
                                     ...register('country',{
                                         required: 'The country is required',
@@ -150,15 +165,15 @@ const AddressPage = () => {
                                 }
                                 error={ !!errors.country }
                                 helperText={ errors.country?.message }
-                            >
-                                {
+                            />
+                                {/* {
                                     countries.map( country => 
                                         <MenuItem key={ country.code } value={ country.code }>{ country.name }</MenuItem>
                                     )
                                 }
 
-                            </TextField>
-                        </FormControl>
+                            </TextField> */}
+                        {/* </FormControl> */}
                     </Grid>
                     <Grid item xs={ 12 } sm={ 6 }>
                         <TextField 
