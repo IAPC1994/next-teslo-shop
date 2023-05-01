@@ -3,13 +3,14 @@ import NextLink from 'next/link';
 import { Typography, Grid, Link, CardMedia, CardActionArea, Box, Button } from '@mui/material';
 import { ItemCounter } from '../ui';
 import { CartContext } from '@/context';
-import { ICartProduct } from '@/interfaces';
+import { ICartProduct, IOrderItem } from '@/interfaces';
 
 interface Props {
-    editable?:boolean
+    editable?:boolean;
+    products?:IOrderItem[];
 }
 
-export const CartList = ({ editable = false }:Props) => {
+export const CartList = ({ editable = false, products }:Props) => {
     
     const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
 
@@ -18,10 +19,12 @@ export const CartList = ({ editable = false }:Props) => {
         updateCartQuantity( product );
     }
 
+    const productsToShow = products ? products : cart;
+
     return(
         <>
         {
-            cart.map( product => ( 
+            productsToShow.map( product => ( 
                 <Grid container key={ product.slug + product.size } spacing={ 2 } sx={{ mb: 1 }}>
                     <Grid item xs={ 3 }>
                         <NextLink href={`/product/${ product.slug }`} passHref legacyBehavior>
@@ -45,7 +48,7 @@ export const CartList = ({ editable = false }:Props) => {
                                 ? (<ItemCounter
                                         currentValue={ product.quantity }
                                         maxValue={ 10 }
-                                        updateQuantity={ ( value ) => onNewCartQuantityValue(product, value) }
+                                        updateQuantity={ ( value ) => onNewCartQuantityValue(product as ICartProduct, value) }
                                     /> 
                                 )
                                 : (
@@ -61,7 +64,7 @@ export const CartList = ({ editable = false }:Props) => {
                             <Button 
                                 variant='text' 
                                 color='secondary' 
-                                onClick={ () => removeCartProduct( product ) }>
+                                onClick={ () => removeCartProduct( product as ICartProduct ) }>
                                     Remove
                                 </Button>
                             )
