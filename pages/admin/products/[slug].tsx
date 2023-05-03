@@ -9,8 +9,9 @@ import { IProduct } from '../../../interfaces';
 import { DriveFileRenameOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material';
 import { dbProducts } from '../../../database';
 import { Box, Button, capitalize, Card, CardActions, CardMedia, Checkbox, Chip, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItem, Paper, Radio, RadioGroup, TextField } from '@mui/material';
-import { tesloApi } from '@/api';
+
 import { Product } from '@/models';
+import { tesloApi } from '@/axiosApi';
 
 
 const validTypes  = ['shirts','pants','hoodies','hats']

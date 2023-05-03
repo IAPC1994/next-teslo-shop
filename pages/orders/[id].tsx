@@ -11,7 +11,8 @@ import { ShopLayout } from '../../components/layouts/ShopLayout';
 import { CartList, OrderSummary } from '@/components/cart';
 import { dbOrders } from '@/database';
 import { IOrder } from '@/interfaces';
-import { tesloApi } from '@/api';
+import { tesloApi } from '@/axiosApi';
+
 
 interface Props {
     order: IOrder;
